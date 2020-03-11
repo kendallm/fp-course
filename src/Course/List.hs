@@ -230,6 +230,7 @@ flatMap f =
 flattenAgain ::
   List (List a)
   -> List a
+--flattenAgain = flatMap id
 flattenAgain = flatMap (foldRight (:.) Nil)
 
 -- | Convert a list of optional values to an optional list of values.
@@ -284,7 +285,7 @@ find ::
 -- find _ (Nil) = Empty
 -- find f (h :. t) = if f h then Full h else find f t
 find f =
-  foldRight (\x xs -> if f(x) then Full x else xs) Empty 
+  foldRight (\x other -> if f(x) then Full x else other) Empty 
 
 -- | Determine if the length of the given list is greater than 4.
 --
@@ -321,8 +322,9 @@ lengthGT4 _ = False
 reverse ::
   List a
   -> List a
-reverse Nil = Nil
-reverse xs = foldLeft (\tail x -> x:. tail) Nil xs
+-- reverse Nil = Nil
+-- reverse xs = foldLeft (\tail x -> x:. tail) Nil xs
+reverse xs = foldLeft (flip (:.)) Nil xs
 
 
 -- | Produce an infinite `List` that seeds with the given value at its head,
