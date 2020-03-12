@@ -155,8 +155,9 @@ lift2 ::
   -> k a
   -> k b
   -> k c
-lift2 f ka kb = 
-  pure f <*> ka <*> kb
+lift2 f ka = 
+  -- (f <*> ka <*> kb)
+  (f <$> ka <*>)
   
 
 -- | Apply a ternary function in the environment.
@@ -277,7 +278,8 @@ lift1 =
   -> k b
   -> k b
 (*>) = 
-  error "todo"
+  -- lift2 (\_ b -> b) ka kb
+  lift2 (flip const)
 
 -- | Apply, discarding the value of the second argument.
 -- Pronounced, left apply.
@@ -303,8 +305,8 @@ lift1 =
   -> k a
   -> k b
 (<*) =
-  error "todo: Course.Applicative#(<*)"
-
+  -- lift2 (\a _ -> a) ka kb
+  lift2 (const)
 -- | Sequences a list of structures to a structure of list.
 --
 -- >>> sequence (ExactlyOne 7 :. ExactlyOne 8 :. ExactlyOne 9 :. Nil)
@@ -326,7 +328,7 @@ sequence ::
   List (k a)
   -> k (List a)
 sequence =
-  error "todo: Course.Applicative#sequence"
+   foldRight (lift2 (:.)) (pure Nil)
 
 -- | Replicate an effect a given number of times.
 --
@@ -351,8 +353,8 @@ replicateA ::
   Int
   -> k a
   -> k (List a)
-replicateA =
-  error "todo: Course.Applicative#replicateA"
+replicateA i =
+  sequence . (replicate i)
 
 -- | Filter a list with a predicate that produces an effect.
 --
@@ -379,8 +381,8 @@ filtering ::
   (a -> k Bool)
   -> List a
   -> k (List a)
-filtering =
-  error "todo: Course.Applicative#filtering"
+filtering fkb as =
+  _todo
 
 -----------------------
 -- SUPPORT LIBRARIES --
