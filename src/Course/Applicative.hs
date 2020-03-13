@@ -381,8 +381,9 @@ filtering ::
   (a -> k Bool)
   -> List a
   -> k (List a)
-filtering fkb as =
-  _todo
+filtering p =
+  let f a = (\b as -> if b then a :. as else as)
+  in foldRight (\a fas -> lift2 (f a) (p a) fas) (pure Nil)
 
 -----------------------
 -- SUPPORT LIBRARIES --
