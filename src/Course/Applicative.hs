@@ -307,6 +307,7 @@ lift1 =
 (<*) =
   -- lift2 (\a _ -> a) ka kb
   lift2 (const)
+  
 -- | Sequences a list of structures to a structure of list.
 --
 -- >>> sequence (ExactlyOne 7 :. ExactlyOne 8 :. ExactlyOne 9 :. Nil)
