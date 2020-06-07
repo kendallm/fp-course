@@ -104,8 +104,8 @@ instance Applicative (State s) where
     -> State s b
   (<*>) (State stab) (State sta) =
     State (\s -> 
-      let (a, s') = sta s
-          (fab, s'') = stab s'
+      let (fab, s') = stab s
+          (a, s'') = sta s'
       in (fab a, s''))
 
 -- | Implement the `Monad` instance for `State s`.
